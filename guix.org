@@ -1,0 +1,252 @@
+#+TITLE: GNU Guix
+#+SUBTITLE: Gerenciador de pacotes transacional e Distribuição
+#+AUTHOR: Wallysson Oliveira, Leonardo Valente, Lucas Bortoleto
+#+LANGUAGE: pt-BR
+#+OPTIONS: num:nil date:nil toc:nil tex:t
+#+startup: beamer
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [bigger]
+#+BEAMER_THEME: Arguelles [height=20pt]
+
+* O que é o projeto GNU?
+[[https://www.gnu.org/home.en.html][GNU]] é um sistema operacional livre, ou seja, que respeita a liberdade de seus usuários.
+
+O sistema operacional GNU consiste em pacotes GNU (programas especificamente lançados pelo Projeto GNU)
+bem como software livre lançado por terceiros.
+
+O desenvolvimento do GNU tornou possível o uso de um computador sem um software que ameace sua liberdade.
+
+O gerenciador de pacotes e distribuição (GNU/Linux, Hurd) [[https://guix.gnu.org/][Guix]] faz parte do projeto GNU.
+
+* O que é um gerenciador de pacotes transacional?
+Tal como um Banco de Dados, cada operação de um gerenciador de pacotes transacional é uma transação, ou seja,
+ou a operação é um sucesso ou nada acontece (o estado atual é mantido).
+
+[[https://guix.gnu.org/manual/en/html_node/Package-Management.html][Guix]] também mantém cada estado salvo, chamados de gerações, permitindo ao usuário "voltar no tempo" com
+o comando:
+#+BEGIN_SRC shell
+  guix package -S [PATTERN]
+#+END_SRC
+Onde PATTERN é um REGEX.
+
+Você pode listar as gerações com o comando:
+#+BEGIN_SRC shell
+  guix package -l [PATTERN]
+#+END_SRC
+Caso nenhum PATTERN seja enviado, Guix irá mostrar todas as gerações.
+
+* Exemplo:
+\begin{minipage}[c]{0.45\textwidth}
+  \includegraphics[height=1.5\textwidth]{~/Unicamp/MC504/Apresentação Guix/List generations.png}
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.45\textwidth}
+  \includegraphics[height=0.25\textwidth]{~/Unicamp/MC504/Apresentação Guix/Switch generation.png}
+\end{minipage}
+
+* Mas isso não ocupa muito armazenamento?
+A resposta curta é: Sim!
+
+A resposta longa é: Sim! E por isso Guix vem equipado com um Coletor de Lixo que pode ser executado pelo
+usuário a qualquer comando através do comando:
+#+BEGIN_SRC shell
+  guix gc
+#+END_SRC
+
+Guix consegue determinar quais pacotes ainda são utilizados através dos perfis e remover aqueles que
+não estão mais em uso.
+
+Além disso, o coletor de lixo pode também remover gerações muito antigas, as quais o usuário possivelmente não
+irá querer voltar, através do comando:
+#+BEGIN_SRC shell
+  guix gc -d [PATTERN]
+#+END_SRC
+
+* Guix permite mais!
+Todas as definições do Guix e de seus pacotes são controladas por versão, e o guix pull permite que você
+“viaje no tempo” na história do próprio Guix (como um grande repositório Git).
+
+O comando:
+#+BEGIN_SRC shell
+  guix pull -l PATTERN
+#+END_SRC
+Permite ao usuário listar todas as gerações do Guix e outros canais.
+
+Similar ao guix package, também é possível "voltar no tempo", através do comando:
+#+BEGIN_SRC shell
+  guix pull -S PATTERN
+#+END_SRC
+
+* Guix ainda permite mais!
+É possível criar ambientes de trabalho, com versões específicas de pacotes através do comando:
+#+BEGIN_SRC shell
+  guix shell [LISTA_DE_PACOTES]
+#+END_SRC
+
+Permitindo, assim, ambientes de teste e desenvolvimento. Além disso, é possível conteinerizar esses sistemas
+através da flag -C ou --container, tornando o sistema completamente isolado.
+
+* Mas e o Sistema Operacional?
+Além de um gerenciador de pacotes incrível, Guix pode também ser instalado como um [[https://guix.gnu.org/manual/en/html_node/System-Installation.html][sistema operacional]] completo.
+
+Trazendo em si todas as propriedades do gerenciador de pacotes, mas agora no sistema.
+
+Sendo assim, é possível versionar todas as suas configurações de home, popularmente conhecidas como dotfiles,
+através de comandos:
+#+BEGIN_SRC shell
+  guix home
+#+END_SRC
+Por exemplo, o comando:
+#+BEGIN_SRC shell
+  guix home reconfigure [PATH]
+#+END_SRC
+Permite que uma transação de sua atual configuração da home seja feita, ou seja, caso falhe, nada ocorrerá!
+
+* Guix System
+Guix também permite controle total do Sistema Operacional como transações de pacotes através de comandos:
+#+BEGIN_SRC shell
+  guix system
+#+END_SRC
+Permitindo a reconfiguração total do sistema de forma transacional com:
+#+BEGIN_SRC shell
+  guix system reconfigure [PATH]
+#+END_SRC
+
+Tanto guix home quanto guix system permitem o retorno a gerações antigas caso algo falhe, por exemplo,
+imagine o seguinte cenário:
+
+* ⁤
+Sua configuração do extensível, customizável e livre editor de texto [[https://www.gnu.org/software/emacs/][Emacs]] deixou de funcionar
+após uma atualização que você realizou na configuração.
+
+Após muito tempo buscando o problema você percebe que já são 2 horas da tarde de uma terça feira e você está
+atrasado para a aula de Sistemas Operacionais, o que fazer?
+
+Um simples:
+#+BEGIN_SRC shell
+  guix home roll-back
+#+END_SRC
+
+Retornaria sua configuração para o estado anterior, onde tudo funcionava corretamente!
+
+* ⁤
+Agora imagine um cenário pior:
+
+Após uma atualização de sua configuração de sistema algo deu errado,
+seu teclado não funciona como esperado e seu mouse está invertido e você está atrasado para a apresentação de
+seu seminário em Sistemas Operacionais , um simples:
+#+BEGIN_SRC shell
+  guix system roll-back
+#+END_SRC
+Retornaria todo seu sistema para o estado anterior.
+
+* Seu sistema Guix é replicável e de fácil redistribuição!
+Guix system também possui o poder de gerar uma [[https://guix.gnu.org/manual/en/html_node/Invoking-guix-system.html#index-image_002c-creating-disk-images][imagem]] atual do seu sistema, isso mesmo, uma cópia exata de
+seu sistema operacional atual, com as mesmas configurações e pacotes, através do comando:
+#+BEGIN_SRC shell
+  guix system image
+#+END_SRC
+Por exemplo, caso você tenha um pendrive montado em /dev/sbc, você pode criar uma cópia de seu sistema atual
+com o comando
+#+BEGIN_SRC shell
+  dd if=$(guix system image [PATH]) of=/dev/sdc
+#+END_SRC
+Onde PATH é leva para sua configuração atual.
+
+E Fim! Você já pode instalar seu sistema atual em outra máquina, pronto para uso.
+
+* Mais contêineres
+Além da criação de um .iso pronto para uso, você pode também criar contêineres com configurações e pacotes
+específicos através do comando:
+#+BEGIN_SRC shell
+  guix system image -t docker [PATH]
+#+END_SRC
+
+Por fim, o contêiner pode ser lançado com Docker através dos comandos:
+#+BEGIN_SRC shell
+image_id="$(docker load < [PATH_TO_IMAGE].tar.gz)"
+container_id="$(docker create $image_id)"
+docker start $container_id
+#+END_SRC
+
+* Mas como tudo isso é configurado?
+Tanto o gerenciador de pacotes, como o sistema operacional GNU Guix são configurados em [[https://www.gnu.org/software/guile/][GNU Guile]]. tal como
+seu init system [[https://www.gnu.org/software/shepherd/][GNU Shepherd]], que é uma implementação de Scheme.
+
+Por exemplo, a configuração do sistema é definida como:
+
+* ⁤
+\begin{minipage}[c]{0.5\textwidth}
+  \includegraphics[height=1.2\textwidth]{~/Unicamp/MC504/Apresentação Guix/Configuração 1.png}
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.5\textwidth}
+  \includegraphics[height=1.2\textwidth]{~/Unicamp/MC504/Apresentação Guix/Configuração 2.png}
+\end{minipage}
+
+* Por que Guile?
+Guile é uma implementação da linguagem Scheme, que por sua vez é um LISP, também parte do projeto GNU.
+
+Por ser um Scheme é extremamente fácil de ser estendida através de macros e funções que rodam em tempo de
+compilação, expansão, leitura ou execução.
+
+Facilitando a criação de linguagens de domínio específicos (DSLs), como a própria configuração do Guix mostrada
+acima.
+
+Além disso, possui um rico ecossistema e uma comunidade fortemente ativa. Dentre projetos que utilizam Guile,
+merecem destaque:
+
+* ⁤
+1. Guix, que possui código Guile em seu core, além de ser a linguagem oficial de configuração;
+2. [[https://spritely.institute/goblins/][Goblins]], projeto que traz uma série de abstrações para lidar com concorrência paralelismo em sistemas
+   distribuídos. Assim o programador pode se concentrar na programação de objetos e não na
+   arquitetura de protocolos;
+3. [[https://github.com/wingo/fibers][Fibers]], projeto que traz um modelo de concorrência similar a implementada na linguagem Go para o Guile.
+
+* Outras linguagens dentro do Guile
+O compilador do Guile também possui a implementação de outras linguagens, como EmacsLisp e ECMASscript.
+
+Elas são compiladas para a mesma linguagem intermediária, chamada de tree-il, e por fim, executadas pela
+mesma VM, permitindo assim a comunicação de diferentes linguagens entre si.
+
+A comunidade vem buscando implementar uma versão de Python e Lua, mas toda linguagem é bem aceita!
+
+* Aplicações práticas:
+Atualmente o uso de Guix vem crescendo muito na Indústria e na Academia, pelo mesmo motivo: reprodutibilidade
+
+Como explicado anteriormente, é muito simples recriar e distribuir o sistema Guix com configurações e pacotes
+específicos, facilitando a replicabilidade d pesquisas como mostram os papers
+[[https://www.biorxiv.org/content/10.1101/298653v2][Reproducible genomics analysis pipelines with GNU Guix]] e
+[[https://inria.hal.science/hal-01161771/en][Reproducible and User-Controlled Software Environments in HPC with Guix]].
+
+* ⁤
+Outra experiência tem sido a minha no meu atual emprego na empresa [[https://www.buzzlabs.com.br/][Buzzlabs]], o uso do Guix tem sido estudado
+para o desenvolvimento de contêineres e a realização de Deploy dos produtos da empresa.
+
+A ideia é a criação de contêineres específicos para produtos específicos, utilizados tanto em desenvolvimento,
+como na criação de testes, como na distribuição.
+
+Guix possui uma série de ferramentas que podem ser utilizadas para facilitar esse processo, dentre eles, o
+comando:
+#+BEGIN_SRC shell
+  guix deploy [PATH]
+#+END_SRC
+Que permite reconfigurar servidores não localmente.
+
+* ⁤
+Imagine o cenário em que nós possuímos temos que atualizar uma aplicação e, por conta disso, todos os nossos
+servidores serão também atualizados.
+
+O guix deploy facilita esse processo como mágica, carregando a mesma configuração em diferentes máquinas
+através da web.
+
+A lista de máquinas a serem reconfiguradas se encontram no arquivo, escrito em Guile, no PATH, como no exemplo
+abaixo:
+
+* ⁤
+#+ATTR_LATEX: :height 220 :center t
+[[~/Unicamp/MC504/Apresentação Guix/Deploy.png]]
+
+* ⁤
+#+ATTR_LATEX: :height 220 :center t
+[[~/Unicamp/MC504/Apresentação Guix/Guix Logo.pdf]]
