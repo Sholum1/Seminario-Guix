@@ -27,7 +27,7 @@ o comando:
 #+BEGIN_SRC shell
   guix package -S [PATTERN]
 #+END_SRC
-Onde PATTERN é um REGEX.
+Onde PATTERN pode ser um número de geração ou um número prefixado com “+” ou “-”.
 
 Você pode listar as gerações com o comando:
 #+BEGIN_SRC shell
@@ -37,18 +37,18 @@ Caso nenhum PATTERN seja enviado, Guix irá mostrar todas as gerações.
 
 * Exemplo:
 \begin{minipage}[c]{0.45\textwidth}
-  \includegraphics[height=1.5\textwidth]{~/Unicamp/MC504/Apresentação Guix/List generations.png}
+  \includegraphics[height=1.5\textwidth]{./List generations.png}
 \end{minipage}%
 \hfill
 \begin{minipage}[c]{0.45\textwidth}
-  \includegraphics[height=0.25\textwidth]{~/Unicamp/MC504/Apresentação Guix/Switch generation.png}
+  \includegraphics[height=0.25\textwidth]{./Switch generation.png}
 \end{minipage}
 
 * Mas isso não ocupa muito armazenamento?
 A resposta curta é: Sim!
 
 A resposta longa é: Sim! E por isso Guix vem equipado com um Coletor de Lixo que pode ser executado pelo
-usuário a qualquer comando através do comando:
+usuário a qualquer momento comando através do comando:
 #+BEGIN_SRC shell
   guix gc
 #+END_SRC
@@ -87,7 +87,8 @@ Permitindo, assim, ambientes de teste e desenvolvimento. Além disso, é possív
 através da flag -C ou --container, tornando o sistema completamente isolado.
 
 * Mas e o Sistema Operacional?
-Além de um gerenciador de pacotes incrível, Guix pode também ser instalado como um [[https://guix.gnu.org/manual/en/html_node/System-Installation.html][sistema operacional]] completo.
+Além de um gerenciador de pacotes incrível, Guix pode também ser instalado como um [[https://guix.gnu.org/manual/en/html_node/System-Installation.html][sistema operacional]]
+completo.
 
 Trazendo em si todas as propriedades do gerenciador de pacotes, mas agora no sistema.
 
@@ -177,11 +178,11 @@ Por exemplo, a configuração do sistema é definida como:
 
 * ⁤
 \begin{minipage}[c]{0.5\textwidth}
-  \includegraphics[height=1.2\textwidth]{~/Unicamp/MC504/Apresentação Guix/Configuração 1.png}
+  \includegraphics[height=1.2\textwidth]{./Configuração 1.png}
 \end{minipage}%
 \hfill
 \begin{minipage}[c]{0.5\textwidth}
-  \includegraphics[height=1.2\textwidth]{~/Unicamp/MC504/Apresentação Guix/Configuração 2.png}
+  \includegraphics[height=1.2\textwidth]{./Configuração 2.png}
 \end{minipage}
 
 * Por que Guile?
@@ -245,8 +246,8 @@ abaixo:
 
 * ⁤
 #+ATTR_LATEX: :height 220 :center t
-[[~/Unicamp/MC504/Apresentação Guix/Deploy.png]]
+[[./Deploy.png]]
 
 * ⁤
 #+ATTR_LATEX: :height 220 :center t
-[[~/Unicamp/MC504/Apresentação Guix/Guix Logo.pdf]]
+[[./Guix Logo.pdf]]
