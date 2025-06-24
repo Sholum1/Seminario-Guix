@@ -183,8 +183,8 @@ docker start $container_id
 #+END_SRC
 
 * Mas como tudo isso é configurado?
-Tanto o gerenciador de pacotes, como o sistema operacional GNU Guix são configurados em [[https://www.gnu.org/software/guile/][GNU Guile]]. tal como
-seu init system [[https://www.gnu.org/software/shepherd/][GNU Shepherd]], que é uma implementação de Scheme.
+Tanto o gerenciador de pacotes, como o sistema operacional GNU Guix são configurados em [[https://www.gnu.org/software/guile/][GNU Guile]], tal como
+seu init system [[https://www.gnu.org/software/shepherd/][GNU Shepherd]], sendo Guile uma implementação de Scheme.
 
 Por exemplo, a configuração do sistema é definida como:
 
@@ -211,10 +211,12 @@ merecem destaque:
 
 * ⁤
 1. Guix, que possui código Guile em seu core, além de ser a linguagem oficial de configuração;
-2. [[https://spritely.institute/goblins/][Goblins]], projeto que traz uma série de abstrações para lidar com concorrência paralelismo em sistemas
+2. GNU [[https://www.gnu.org/software/shepherd/][Shepherd]], um gerenciador de serviços e "init" system (PID 1) oficial do Guix, completamente extensível
+   e customizável em Guile;
+3. [[https://spritely.institute/goblins/][Goblins]], projeto que traz uma série de abstrações para lidar com concorrência paralelismo em sistemas
    distribuídos. Assim o programador pode se concentrar na programação de objetos e não na
    arquitetura de protocolos;
-3. [[https://github.com/wingo/fibers][Fibers]], projeto que traz um modelo de concorrência similar a implementada na linguagem Go para o Guile.
+4. [[https://github.com/wingo/fibers][Fibers]], projeto que traz um modelo de concorrência similar a implementada na linguagem Go para o Guile.
 
 * Outras linguagens dentro do Guile
 O compilador do Guile também possui a implementação de outras linguagens, como EmacsLisp e ECMASscript.
