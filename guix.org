@@ -1,6 +1,6 @@
 #+TITLE: GNU Guix
 #+SUBTITLE: Gerenciador de pacotes transacional e Distribuição
-#+AUTHOR: Wallysson Oliveira, Leonardo Valente, Lucas Bortoleto
+#+AUTHOR: Wallysson Oliveira, Leonardo Valente, Lucas Borttoleto
 #+LANGUAGE: pt-BR
 #+OPTIONS: num:nil date:nil toc:nil tex:t
 #+startup: beamer
