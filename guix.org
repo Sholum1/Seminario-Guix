@@ -18,6 +18,18 @@ O desenvolvimento do GNU tornou possível o uso de um computador sem um software
 
 O gerenciador de pacotes e distribuição (GNU/Linux, Hurd) [[https://guix.gnu.org/][Guix]] faz parte do projeto GNU.
 
+* O que é GNU Guix?
+GNU Guix é um [[https://guix.gnu.org][gerenciador de pacotes transacional]] e uma [[https://guix.gnu.org/manual/en/html_node/System-Installation.html][distribuição GNU/Linux]] avançada, parte do projeto GNU.
+Combinando dois conceitos poderosos:
+
+1. Abordagem Funcional: Cada pacote é construído em ambientes isolados e puros,
+    garantindo builds [[https://guix.gnu.org/manual/en/html_node/Features.html][reproduzíveis]] e imunes a dependências ocultas;
+2. Transacionalidade: Todas as operações (instalação/remoção) são atomicamente aplicadas ou totalmente
+   revertidas, sem estados intermediários corruptos.
+
+Seu núcleo é implementado em [[https://www.gnu.org/software/guile][Guile Scheme]], permitindo configurações declarativas do sistema inteiro via
+programação.
+
 * O que é um gerenciador de pacotes transacional?
 Tal como um Banco de Dados, cada operação de um gerenciador de pacotes transacional é uma transação, ou seja,
 ou a operação é um sucesso ou nada acontece (o estado atual é mantido).
